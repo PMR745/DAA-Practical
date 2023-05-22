@@ -1,89 +1,50 @@
 #include <iostream>
-
 using namespace std;
-
-int shortest(int, int);
-int cost[10][10], dist[20], i, j, n, k, m, S[20], v, totcost, path[20], p;
+int i, j, k, a, b, v, u, n, ne = 1;
+int low, mincost = 0, cost[10][10];
+int visited[10] = {0};
 int main()
 {
-    int c;
-    cout << "Enter no of vertices: ";
+    cout << "Prims algorithm\n";
+    cout << "\nEnter number of vertices:\t";
     cin >> n;
-
-    cout << "Enter No of edges: ";
-    cin >> m;
-
-    cout << "Enter Cost of Edge\n";
-    
-    for(k = 1; k <= m; k++)
+    cout << "\nEnter the adjacency matrix:\n";
+    for (i = 1; i <= n; i++)
     {
-        cin >> i >> j >> c;
-        cost[i][j] = c;
-    }
-
-    for(i = 1; i < n; i++)
-    {
-        for(j = 1; j < n; j++)
+        for (j = 1; j <= n; j++)
         {
-            if(cost[i][j] == 0)
+            cin >> cost[i][j];
+            if (cost[i][j] == 0)
+                cost[i][j] = 999;
+        }
+    }
+    visited[1] = 1;
+    // printf("\nThe edges of Minimum Cost spanning tree are:\t");
+    while (ne < n)
+    {
+        for (i = 1, low = 999; i <= n; i++)
+        {
+            for (j = 1; j <= n; j++)
             {
-                cost[i][j] = 31999;
+                if (cost[i][j] < low)
+                {
+                    if (visited[i] != 0)
+                    {
+                        low = cost[i][j];
+                        a = u = i;
+                        b = v = j;
+                    }
+                }
             }
         }
-    }
-
-    cout << "Enter Initial Vertex";
-    cin >> v;
-    cout << v << endl;
-    shortest(v, n);
-}
-
-int shortest(int v, int n)
-{
-    int min;
-    for(i = 1; j <= n; i++)
-    {
-        S[i] = 0;
-        dist[i] = cost[v][i];
-    }
-    path[++p] = v;
-    S[v] = 1;
-    dist[v] = 0;
-
-    for(i = 2; i <= n; i++)
-    {
-        k = 1;
-        min = 31999;
-    }
-
-    for(j = 1; j <= n; j++)
-    {
-        if(dist[j] < min && S[j] != 1)
+        if (visited[u] == 0 || visited[v] == 0)
         {
-            min = dist[j];
-            k = j;
+            cout << "\n edge cost= " << low;
+            mincost += low;
+            visited[b] = 1;
         }
+        cost[a][b] = cost[b][a] = 999;
     }
-    
-    if(cost[v][k] <= dist[k])
-    {
-        p = 1;
-        path[++p] = k;
-    }
-
-    for(j = 1; j <= p; j++)
-    {
-        cout << path[j];
-        cout << endl;
-    }
-
-    S[k] = 1;
-
-    for(j = 1; j <= n; j++)
-    {
-        if(cost[k][j] != 31999 && dist[j] >= dist[k] + cost[k][j] && S[j]!=1)
-        {
-            dist[j] = dist[k] + cost[k][j];
-        }
-    }
+    cout << "\nMinimum Cost= " << mincost;
+    return 0;
 }
